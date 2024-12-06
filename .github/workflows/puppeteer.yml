@@ -1,0 +1,32 @@
+name: Run Puppeteer Script
+
+# Déclencher l'action sur push ou à intervalles réguliers (par exemple, tous les jours)
+on:
+  push:
+    branches:
+      - main  # Exécuter sur des pushs vers la branche principale
+  schedule:
+    - cron: '0 2 * * *'  # Exécuter tous les jours à 2h du matin (UTC)
+
+jobs:
+  run-puppeteer:
+    runs-on: ubuntu-latest  # Utiliser une machine virtuelle Ubuntu pour exécuter le script
+
+    steps:
+      # Étape 1 : Vérifier le code depuis GitHub
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Étape 2 : Configurer Node.js (vous pouvez spécifier la version souhaitée)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Vous pouvez choisir une autre version si nécessaire
+
+      # Étape 3 : Installer les dépendances
+      - name: Install dependencies
+        run: npm install  # Installer Puppeteer et d'autres dépendances définies dans package.json
+
+      # Étape 4 : Exécuter le script Puppeteer
+      - name: Run Puppeteer script
+        run: node main.js  # Exécuter votre script main.js
